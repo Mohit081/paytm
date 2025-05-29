@@ -1,7 +1,7 @@
 import express from "express"
 
-const Router = express.Router()
+const router = express.Router()
 
-Router.get("/account",account)
+router.get("/account",account)
 
-module.exports = Router;
+module.exports = router;
