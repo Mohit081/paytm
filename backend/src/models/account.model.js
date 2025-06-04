@@ -8,7 +8,7 @@ const accountSchema = new Schema(
       required: true,
     },
     balance: {
-      type: Number,
+      type: Number, 
       required: true,
     },
   },
@@ -18,4 +18,4 @@ const accountSchema = new Schema(
 );
 
 const Account = mongoose.model("Account", accountSchema);
-export default Account;
+export {Account};

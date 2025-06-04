@@ -1,8 +1,8 @@
 import zod from "zod";
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import Account from "../models/account.model";
+import { Account } from "../models/account.model.js";
 
 const signupSchema = zod.object({
   username: zod.string(),
@@ -13,15 +13,16 @@ const signupSchema = zod.object({
 
 export const userSignup = async (req, res) => {
   const { username, firstName, lastName, password } = req.body;
+  console.log(username, firstName, lastName, password);
   const { success } = signupSchema.safeParse(req.body);
 
   if (!success) {
     return res.json({
-      message: "Email already taken / Incorrect input",
+      message: " Incorrect input",
     });
   }
 
-  const user = User.findOne({
+  const user = await User.findOne({
     username: username,
   });
 
@@ -31,11 +32,7 @@ export const userSignup = async (req, res) => {
     });
   }
 
-  const hashPassword = async () => {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    return hashedPassword;
-  };
+  const hashPassword = await bcrypt.hash(password, 10);
 
   const dbUser = await User.create({
     username,
@@ -60,24 +57,28 @@ export const userSignin = async (req, res) => {
     return res.json({
       message: "all filed are required",
     });
-  }
+  }  
 
-  const user = await User.findOne(username);
+  const user = await User.findOne({ username });
   if (!user) {
     return res.json({
       message: "username not find",
-    });
-  }
+    });    
+  } 
 
   const validPassword = async () => {
-    const isValid = await bcrypt.compare(password, user.password);
-  };
+    await bcrypt.compare(password, user.password);
+  }; 
 
   if (!validPassword) {
     return res.json({
       message: "username not find",
     });
   }
+
+  const balance = await Account.findOne({
+    userId: user._id
+  })
 
   const token = jwt.sign(
     {
@@ -87,26 +88,30 @@ export const userSignin = async (req, res) => {
   );
 
   res.json({
-    message: "user login",
-    token,
+    firstName:user.firstName,
+    lastName:user.lastName,
+    balance:balance.balance,
+    message: "success",
+    token
   });
 };
-
+ 
 export const updateUser = async (req, res) => {
+   console.log(req.body)
   await User.updateOne(req.body, {
     id: req.userId,
   });
 
   res.json({
     message: "updated successfully",
-  });
+  }); 
 };
 
 export const getUser = async (req, res) => {
   const { filter } = req.query || "";
   const users = await User.find({
     $or: [
-      {
+      { 
         firstName: {
           $regex: filter,
         },
@@ -115,7 +120,7 @@ export const getUser = async (req, res) => {
         lastName: {
           $regex: filter,
         },
-      },
+      }, 
     ],
   });
 
@@ -128,3 +133,24 @@ export const getUser = async (req, res) => {
     })),
   });
 };
+
+export const getAllUser = async(req, res) => {
+  try {
+    const users = await User.find().select('-password').limit(10);
+
+    if(!users){
+      return res.json({
+        message: "fetch user error"
+      })
+    }
+
+    res.status(200).json({
+      message:"user fetch successfully",
+      users
+    })
+  } catch (error) {
+    return res.json({
+      message: "something wrong fetching users"
+    })
+  }
+}

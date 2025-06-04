@@ -1,7 +1,13 @@
-import express from "express"
+import express from "express";
+import { authenticateToken } from "../middleware/auth.js";
+import {
+  checkBalance,
+  moneyTransfer,
+} from "../controllers/account.controller.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/account",account)
+router.post("/balance", authenticateToken, checkBalance);
+router.post("/transfer", authenticateToken, moneyTransfer);
 
-module.exports = router;
+export default router; 
