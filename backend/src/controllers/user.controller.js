@@ -62,7 +62,7 @@ export const userSignin = async (req, res) => {
   const user = await User.findOne({ username });
   if (!user) {
     return res.json({
-      message: "username not find",
+      message: "username not find or incorrect",
     });    
   } 
 
