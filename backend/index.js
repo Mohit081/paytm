@@ -10,7 +10,7 @@ const app = express();
 connectDB();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // your frontend's origin
+  origin: 'https://curious-torrone-4ba67e.netlify.app', // your frontend's origin
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
