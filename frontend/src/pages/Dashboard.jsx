@@ -24,7 +24,8 @@ const Dashboard = () => {
           }
         }
       );
-      setBalance(userBalance.data.balance)
+      const convertbalance = userBalance.data.balance.toFixed(2)
+      setBalance(convertbalance)
     };
     fetchBalance()
   },[]);

@@ -4,10 +4,10 @@ import User from "../models/user.model.js";
 
 export const checkBalance = async (req, res) => {
   const account = await Account.findOne({
-    userId: req.userId,
+    userId: req.userId, 
   });
 
-  res.json({     
+  res.json({           
     balance: account.balance,
   });
 };

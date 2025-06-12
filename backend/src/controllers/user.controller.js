@@ -59,6 +59,7 @@ export const userSignin = async (req, res) => {
     });
   }  
 
+  console.log(username , password)
   const user = await User.findOne({ username });
   if (!user) {
     return res.json({
@@ -83,10 +84,10 @@ export const userSignin = async (req, res) => {
   const token = jwt.sign(
     {
       userId: user._id,
-    },
+    }, 
     process.env.JWT_SECRET
   );
-
+ 
   res.json({
     firstName:user.firstName,
     lastName:user.lastName,
