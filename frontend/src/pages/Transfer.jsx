@@ -3,6 +3,7 @@ import { FaPaperPlane, FaUserFriends } from "react-icons/fa";
 import { useUser } from "../context/context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { server_url } from "../../constant";
 
 const TransferMoney = () => {
   const [amount, setAmount] = useState("");
@@ -24,7 +25,7 @@ const TransferMoney = () => {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/api/v1/account/transfer",
+      `${server_url}/account/transfer`,
 
       {
         headers: {

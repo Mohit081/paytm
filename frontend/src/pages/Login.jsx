@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { FaLock, FaWallet } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/context";
+import { server_url } from "../../constant";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -21,7 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      "http://localhost:3000/api/v1/user/signin",
+      `${server_url}/user/signin`,
       credentials
     );
     setUser(response.data)

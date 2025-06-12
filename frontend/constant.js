@@ -1,0 +1,1 @@
+export const server_url ="https://paytm-omega-five.vercel.app/api/v1";

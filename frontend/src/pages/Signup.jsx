@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { server_url } from "../../constant";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const Signup = () => {
     e.preventDefault();
     console.log("Logging in with:",formData );
     const response = await axios.post(
-      "http://localhost:3000/api/v1/user/signup",
+     `${server_url}/user/signup`,
       formData
     );
     navigate("/login")

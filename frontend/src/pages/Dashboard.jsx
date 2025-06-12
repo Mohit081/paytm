@@ -3,6 +3,7 @@ import { FaUserCircle, FaWallet, FaSearch, FaMoneyCheck } from "react-icons/fa";
 import { useUser } from "../context/context";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { server_url } from "../../constant";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       const userBalance = await axios.post(
-        "http://localhost:3000/api/v1/account/balance",
+        `${server_url}/account/balance`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -34,7 +35,8 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const users = await axios.get(
-          "http://localhost:3000/api/v1/user/getAlluser"
+          `${server_url}/user/getAlluser`
+          
         );
         // console.log(users.data.users)
         setUsers(users.data.users);
@@ -51,7 +53,7 @@ const Dashboard = () => {
     const filteredUsers = async () => {
       if (searchTerm.length > 0) {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/user/getUser",
+          `${server_url}/user/getUser`,
           {
             params: {
               filter: searchTerm,
